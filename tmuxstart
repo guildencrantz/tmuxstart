@@ -54,13 +54,14 @@ select_layout() { tmux select-layout -t $session:"$@"; }
 send_keys() { tmux send-keys -t $session:"$@"; }
 send_line() { send_keys "$@" "Enter"; }
 set_env() { tmux set-environment -t $session "$@"; }
+set_option() { tmux set-option -t $session "$@"; }
 set_path() { tmux set-option -t $session default-path "$@"; }
 split() { tmux split-window -t $session:"$@"; }
 swap() { tmux swap-pane -t $session:"$@"; }
 
 session=$1
 TMUX_OLD=$TMUX
-TMUX=
+unset TMUX
 if ! tmux has-session -t $session ; then
     if [ -f "$sessiondir/$1" ] ; then
         . "$sessiondir/$1"
