@@ -109,6 +109,13 @@ accepts the same arguments as ``tmux set-environment``.  Example::
 
     set_env EDITOR acme  # Set EDITOR environment variable to "acme"
 
+set_option
+~~~~~~~~~~
+``set_option`` sets options for the session. This function accepts the same
+arguments as ``tmux set-option``. Example::
+
+    set_option synchronize-panes # Synchronize panes in the current window
+
 set_path
 ~~~~~~~~
 ``set_path`` sets the default working directory for new panes in the new
