@@ -1,4 +1,5 @@
 #!/bin/sh
+# vim: set ts=4 sw=4 sts=4 ai et :
 
 sessiondir=${TMUXSTART_DIR:-$HOME/.tmuxstart}
 ts_name=$(basename $0)
@@ -38,6 +39,10 @@ while getopts ':hlv' option; do
     esac
 done
 
+if [ -e $sessiondir/tmuxstart.conf ]; then
+    source $sessiondir/tmuxstart.conf
+fi
+
 # Some helper functions for simpler session files
 new_session() {
     # Set default path based on $path variable if defined
@@ -66,7 +71,13 @@ if ! tmux has-session -t $session ; then
     if [ -f "$sessiondir/$1" ] ; then
         . "$sessiondir/$1"
     else
-        tmux new-session -d -s $session
+        for DIR in ${TMUXSTART_PROJECT_DIRS[*]}; do
+            if [ -d $DIR/$1 ]; then
+                SESSION_ARGS="-n $1 -c $DIR/$1"
+                break
+            fi
+        done
+        tmux new-session -d -s $session $SESSION_ARGS
     fi
 fi
 if [ "$TMUX_OLD" = "" ]; then
