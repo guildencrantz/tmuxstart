@@ -67,7 +67,8 @@ swap() { tmux swap-pane -t $session:"$@"; }
 session=$1
 TMUX_OLD=$TMUX
 unset TMUX
-if ! tmux has-session -t $session ; then
+
+if ! tmux has-session -t="$session" ; then
     if [ -f "$sessiondir/$1" ] ; then
         . "$sessiondir/$1"
     else
@@ -80,6 +81,7 @@ if ! tmux has-session -t $session ; then
         tmux new-session -d -s $session $SESSION_ARGS
     fi
 fi
+
 if [ "$TMUX_OLD" = "" ]; then
     tmux attach-session -t $session
 else
